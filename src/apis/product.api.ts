@@ -1,0 +1,27 @@
+import { Router } from "express";
+
+import { Product } from "../models";
+
+const api = Router();
+
+api.get("/all/", async (req, res) => {
+  const products = await Product.getAll();
+  res.send(products?.map((product) => product.getObject()));
+});
+
+api.get("/:id/", async (req, res) => {
+  const { id } = req.params;
+  if (!id) return res.status(400).send();
+  const product = await Product.getById(id);
+  res.send(product?.getObject() || `No product found with id: ${id}`);
+});
+
+api.post("/", async (req, res) => {
+  const { name, price } = req.body;
+  if (!name || !price) return res.status(400).send();
+  const product = new Product(name, price);
+  await product.create();
+  res.send(product.getObject());
+});
+
+export { api };
