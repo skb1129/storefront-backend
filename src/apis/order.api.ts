@@ -25,7 +25,13 @@ api.get("/user/:user_id/", async (req, res) => {
 
 api.post("/", async (req, res) => {
   const { status, products, quantities, user_id } = req.body;
-  if (!status || !products?.length || !quantities?.length || !user_id)
+  if (
+    !status ||
+    !user_id ||
+    !products?.length ||
+    !quantities?.length ||
+    products.length !== quantities.length
+  )
     return res.status(400).send();
   const order = new Order(status, products, quantities, user_id);
   await order.create();
