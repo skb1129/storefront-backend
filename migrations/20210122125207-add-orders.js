@@ -15,13 +15,13 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("order", {
+  return db.createTable("orders", {
     id: { type: "int", primaryKey: true, autoIncrement: true },
     user_id: {
       type: "string",
       foreignKey: {
         name: "order_user_id_fk",
-        table: "user",
+        table: "users",
         rules: { onDelete: "CASCADE", onUpdate: "RESTRICT" },
         mapping: "id",
       },
@@ -33,7 +33,7 @@ exports.up = function (db) {
 };
 
 exports.down = function (db) {
-  return db.dropTable("order");
+  return db.dropTable("orders");
 };
 
 exports._meta = {

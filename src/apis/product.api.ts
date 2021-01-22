@@ -10,8 +10,8 @@ api.get("/all/", async (req, res) => {
 });
 
 api.get("/:id/", async (req, res) => {
-  const { id } = req.params;
-  if (!id) return res.status(400).send();
+  const id = Number(req.params.id);
+  if (Number.isNaN(id)) return res.status(400).send();
   const product = await Product.getById(id);
   res.send(product?.getObject() || `No product found with id: ${id}`);
 });

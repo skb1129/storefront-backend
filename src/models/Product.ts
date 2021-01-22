@@ -3,7 +3,7 @@ import { client } from "../database";
 export class Product {
   static async getAll() {
     try {
-      const { rows } = await client.query("SELECT * FROM product");
+      const { rows } = await client.query("SELECT * FROM products");
       const products = rows.map(
         (row) => new Product(row.name, row.price, row.id)
       );
@@ -12,9 +12,9 @@ export class Product {
       console.log("Error fetching all products", e);
     }
   }
-  static async getById(id: string) {
+  static async getById(id: number) {
     const query = {
-      text: "SELECT * FROM product WHERE id = $1",
+      text: "SELECT * FROM products WHERE id = $1",
       values: [id],
     };
     try {
@@ -41,7 +41,7 @@ export class Product {
 
   async create() {
     const query = {
-      text: "INSERT INTO product(name, price) VALUES($1, $2) RETURNING id",
+      text: "INSERT INTO products(name, price) VALUES($1, $2) RETURNING id",
       values: [this.name, this.price],
     };
     try {
