@@ -57,7 +57,8 @@ export class User {
   async create() {
     this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
     const query = {
-      text: "INSERT INTO users(id, firstname, lastname, password) VALUES($1, $2, $3, $4)",
+      text:
+        "INSERT INTO users(id, firstname, lastname, password) VALUES($1, $2, $3, $4)",
       values: [this.id, this.firstname, this.lastname, this.password],
     };
     try {
