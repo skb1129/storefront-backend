@@ -21,9 +21,8 @@ api.get("/:id/", async (req, res) => {
 api.post(
   "/",
   auth.requiresAuth(async (req, res) => {
-    let { name, price } = req.body;
-    price = Number(price);
-    if (!name || Number.isNaN(price)) return res.status(400).send();
+    const { name, price } = req.body;
+    if (!name || !price) return res.status(400).send();
     const product = new Product(name, price);
     await product.create();
     res.send(product.getObject());
@@ -37,10 +36,9 @@ api.put(
     if (Number.isNaN(id)) return res.status(400).send();
     const product = await Product.getById(id);
     if (!product) return res.status(204).send(`No product found with id: ${id}`);
-    let { name, price } = req.body;
-    price = Number(price);
+    const { name, price } = req.body;
     name && (product.name = name);
-    !Number.isNaN(price) && (product.price = price);
+    price && (product.price = price);
     await product.update();
     res.send(product.getObject());
   })

@@ -35,4 +35,34 @@ api.post(
   })
 );
 
+api.put(
+  "/",
+  auth.requiresAuth(async (req, res, auth) => {
+    const { id, firstname, lastname, password, superuser } = req.body;
+    if (!id) return res.status(400).send();
+    if (id !== auth.sub && !auth.admin) return res.status(401).send();
+    const user = await User.getById(id);
+    if (!user) return res.status(204).send(`No user found with id: ${id}`);
+    firstname && (user.firstname = firstname);
+    lastname && (user.lastname = lastname);
+    password && (user.password = password);
+    typeof superuser === "boolean" && (user.superuser = superuser);
+    await user.update(!!password);
+    res.send(user.getObject());
+  })
+);
+
+api.delete(
+  "/:id/",
+  auth.requiresAuth(async (req, res, auth) => {
+    if (!auth.admin) res.status(401).send();
+    const { id } = req.params;
+    if (!id) return res.status(400).send();
+    const user = await User.getById(id);
+    if (!user) return res.status(204).send(`No user found with id: ${id}`);
+    await user.delete();
+    res.send(user.getObject());
+  })
+);
+
 export { api };
