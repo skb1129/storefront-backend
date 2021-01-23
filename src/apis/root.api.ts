@@ -13,7 +13,7 @@ api.post("/login/", async (req, res) => {
   if (!user) return res.status(404).send(`No user found with id: ${id}`);
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) return res.status(401).send("Password mismatch");
-  res.send(token.generate({ sub: id }));
+  res.send(token.generate({ sub: id, admin: user.superuser }));
 });
 
 export { api };

@@ -20,6 +20,7 @@ exports.up = function (db) {
     firstname: "string",
     lastname: "string",
     password: "string",
+    superuser: "boolean",
   });
 };
 

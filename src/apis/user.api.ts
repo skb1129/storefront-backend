@@ -17,10 +17,10 @@ api.get("/:id/", async (req, res) => {
 });
 
 api.post("/", async (req, res) => {
-  const { id, firstname, lastname, password } = req.body;
+  const { id, firstname, lastname, password, superuser } = req.body;
   if (!id || !firstname || !lastname || !password)
     return res.status(400).send();
-  const user = new User(id, firstname, lastname, password);
+  const user = new User(id, firstname, lastname, password, superuser);
   await user.create();
   res.send(user.getObject());
 });
