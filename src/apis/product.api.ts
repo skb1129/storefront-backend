@@ -17,12 +17,15 @@ api.get("/:id/", async (req, res) => {
   res.send(product?.getObject() || `No product found with id: ${id}`);
 });
 
-api.post("/", auth.requiresAuth(async (req, res) => {
-  const { name, price } = req.body;
-  if (!name || !price) return res.status(400).send();
-  const product = new Product(name, price);
-  await product.create();
-  res.send(product.getObject());
-}));
+api.post(
+  "/",
+  auth.requiresAuth(async (req, res) => {
+    const { name, price } = req.body;
+    if (!name || !price) return res.status(400).send();
+    const product = new Product(name, price);
+    await product.create();
+    res.send(product.getObject());
+  })
+);
 
 export { api };

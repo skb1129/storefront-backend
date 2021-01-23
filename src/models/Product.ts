@@ -1,17 +1,28 @@
 import { client } from "../database";
 
 export class Product {
+  id?: number;
+  name: string;
+  price: number;
+  constructor(name: string, price: number, id?: number) {
+    this.name = name;
+    this.price = price;
+    this.id = id;
+  }
+
+  getObject() {
+    return { id: this.id, name: this.name, price: this.price };
+  }
+
   static async getAll() {
     try {
       const { rows } = await client.query("SELECT * FROM products");
-      const products = rows.map(
-        (row) => new Product(row.name, row.price, row.id)
-      );
-      return products;
+      return rows.map((row) => new Product(row.name, row.price, row.id));
     } catch (e) {
       console.log("Error fetching all products", e);
     }
   }
+
   static async getById(id: number) {
     const query = {
       text: "SELECT * FROM products WHERE id = $1",
@@ -24,19 +35,6 @@ export class Product {
     } catch (e) {
       console.log(`Error fetching product with id: ${id}`, e);
     }
-  }
-
-  id?: number;
-  name: string;
-  price: number;
-  constructor(name: string, price: number, id?: number) {
-    this.name = name;
-    this.price = price;
-    this.id = id;
-  }
-
-  getObject() {
-    return { id: this.id, name: this.name, price: this.price };
   }
 
   async create() {
