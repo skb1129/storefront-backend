@@ -30,13 +30,12 @@ api.post(
 );
 
 api.put(
-  "/:id/",
+  "/",
   auth.requiresAuth(async (req, res) => {
-    const id = Number(req.params.id)
-    if (Number.isNaN(id)) return res.status(400).send();
+    const { id, name, price } = req.body;
+    if (!id) return res.status(400).send();
     const product = await Product.getById(id);
     if (!product) return res.status(204).send(`No product found with id: ${id}`);
-    const { name, price } = req.body;
     name && (product.name = name);
     price && (product.price = price);
     await product.update();

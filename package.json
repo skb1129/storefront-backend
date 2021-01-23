@@ -5,8 +5,9 @@
   "main": "server.ts",
   "scripts": {
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsc && jasmine --config=jasmine.json",
     "tsc": "tsc",
+    "start": "tsc && node dist/src/server.js",
     "migrations": "db-migrate"
   },
   "author": "Surya Kant Bansal <suryakantbansal97@gmail.com>",
@@ -25,10 +26,13 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/jasmine": "^3.6.3",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/pg": "^7.14.9",
+    "@types/supertest": "^2.0.10",
     "jasmine": "^3.6.4",
     "prettier": "^2.2.1",
+    "supertest": "^6.1.1",
     "tsc-watch": "^4.2.9"
   }
 }
