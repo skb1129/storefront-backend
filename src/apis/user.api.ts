@@ -19,6 +19,7 @@ api.get(
     const { id } = req.params;
     if (!id) return res.status(400).send();
     const user = await User.getById(id);
+    if (!user) res.status(204);
     res.send(user?.getObject() || `No user found with id: ${id}`);
   })
 );
@@ -26,7 +27,7 @@ api.get(
 api.post(
   "/",
   auth.requiresAuth(async (req, res, auth) => {
-    if (!auth.admin) res.status(401).send();
+    if (!auth.admin) return res.status(401).send();
     const { id, firstname, lastname, password, superuser } = req.body;
     if (!id || !firstname || !lastname || !password) return res.status(400).send();
     const user = new User(id, firstname, lastname, password, superuser);
@@ -55,7 +56,7 @@ api.put(
 api.delete(
   "/:id/",
   auth.requiresAuth(async (req, res, auth) => {
-    if (!auth.admin) res.status(401).send();
+    if (!auth.admin) return res.status(401).send();
     const { id } = req.params;
     if (!id) return res.status(400).send();
     const user = await User.getById(id);

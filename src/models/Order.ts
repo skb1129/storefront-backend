@@ -36,10 +36,7 @@ export class Order {
   }
 
   static async getById(id: number) {
-    const query = {
-      text: "SELECT * FROM orders WHERE id = $1",
-      values: [id],
-    };
+    const query = { text: "SELECT * FROM orders WHERE id = $1", values: [id] };
     try {
       const { rows } = await client.query(query);
       if (!rows.length) return null;
@@ -56,10 +53,7 @@ export class Order {
   }
 
   static async getByUserId(user_id: string) {
-    const query = {
-      text: "SELECT * FROM orders WHERE user_id = $1",
-      values: [user_id],
-    };
+    const query = { text: "SELECT * FROM orders WHERE user_id = $1", values: [user_id] };
     try {
       const { rows } = await client.query(query);
       return rows.map((row) => {
@@ -80,6 +74,29 @@ export class Order {
       this.id = rows[0].id;
     } catch (e) {
       console.log("Error creating new order", e);
+    }
+  }
+
+  async update() {
+    if (!this.id) return;
+    const query = {
+      text: "UPDATE orders SET status = $1, products = $2, quantities = $3, user_id = $4 WHERE id = $5",
+      values: [this.status, JSON.stringify(this.products), JSON.stringify(this.quantities), this.user_id, this.id],
+    };
+    try {
+      await client.query(query);
+    } catch (e) {
+      console.log(`Error update order with id: ${this.id}`, e);
+    }
+  }
+
+  async delete() {
+    if (!this.id) return;
+    const query = { text: "DELETE FROM orders WHERE id = $1", values: [this.id] };
+    try {
+      await client.query(query);
+    } catch (e) {
+      console.log(`Error deleting order with id: ${this.id}`, e);
     }
   }
 }

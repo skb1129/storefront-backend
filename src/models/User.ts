@@ -36,10 +36,7 @@ export class User {
   }
 
   static async getById(id: string) {
-    const query = {
-      text: "SELECT * FROM users WHERE id = $1",
-      values: [id],
-    };
+    const query = { text: "SELECT * FROM users WHERE id = $1", values: [id] };
     try {
       const { rows } = await client.query(query);
       if (!rows.length) return null;
