@@ -24,10 +24,7 @@ export class Product {
   }
 
   static async getById(id: number) {
-    const query = {
-      text: "SELECT * FROM products WHERE id = $1",
-      values: [id],
-    };
+    const query = { text: "SELECT * FROM products WHERE id = $1", values: [id] };
     try {
       const { rows } = await client.query(query);
       if (!rows.length) return null;
@@ -47,6 +44,29 @@ export class Product {
       this.id = rows[0].id;
     } catch (e) {
       console.log("Error creating new product", e);
+    }
+  }
+
+  async update() {
+    if (!this.id) return;
+    const query = {
+      text: "UPDATE products SET name = $1, price = $2 WHERE id = $3",
+      values: [this.name, this.price, this.id],
+    };
+    try {
+      await client.query(query);
+    } catch (e) {
+      console.log(`Error updating product with id: ${this.id}`, e);
+    }
+  }
+
+  async delete() {
+    if (!this.id) return;
+    const query = { text: "DELETE FROM products WHERE id = $1", values: [this.id] };
+    try {
+      await client.query(query);
+    } catch (e) {
+      console.log(`Error deleting product with id: ${this.id}`, e);
     }
   }
 }
