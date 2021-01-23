@@ -4,8 +4,8 @@ import { TokenData } from "../types";
 
 const JWT_SECRET = `${process.env.JWT_SECRET}`;
 
-export function generate(data: TokenData) {
-  return jwt.sign(data, JWT_SECRET);
+export function generate(data: TokenData, expiresIn?: string | number) {
+  return jwt.sign(data, JWT_SECRET, { expiresIn });
 }
 
 export function verify(token: string): TokenData | undefined {

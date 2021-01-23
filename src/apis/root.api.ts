@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { Router } from "express";
 
+import { TOKEN_EXPIRATION } from "../configs";
 import { User } from "../models";
 import { token } from "../utils";
 
@@ -13,7 +14,7 @@ api.post("/login/", async (req, res) => {
   if (!user) return res.status(404).send(`No user found with id: ${id}`);
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) return res.status(401).send("Password mismatch");
-  res.send(token.generate({ sub: id, admin: user.superuser }));
+  res.send(token.generate({ sub: id, admin: user.superuser }, TOKEN_EXPIRATION));
 });
 
 export { api };
