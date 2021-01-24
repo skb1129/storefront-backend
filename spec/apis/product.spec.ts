@@ -1,16 +1,13 @@
 import supertest from "supertest";
 
 import app from "../../src/app";
-import { connect, disconnect } from "../../src/database";
 
 import { getAuth } from "../helpers/getAuth";
 
 describe("Product API Tests", () => {
   beforeAll(async () => {
-    await connect();
     auth = await getAuth(request);
   });
-  afterAll(disconnect);
 
   let auth: [string, string];
   const request = supertest(app);
