@@ -1,10 +1,18 @@
 import { Order } from "../../src/models";
 
 describe("Order DB model tests", () => {
-  const values = { id: 0, status: "active", products: [1,2], quantities: [20, 30], user_id: "stark" };
+  const values = {
+    id: 0,
+    status: "active",
+    products: [
+      { product_id: 1, quantity: 20 },
+      { product_id: 2, quantity: 10 },
+    ],
+    user_id: "root",
+  };
 
   it("should create new order", async () => {
-    const order = new Order(values.status, values.products, values.quantities, values.user_id);
+    const order = new Order(values.status, values.products, values.user_id);
     await order.create();
     expect(order.id).toBeTruthy();
     values.id = order.id || 0;
@@ -18,7 +26,11 @@ describe("Order DB model tests", () => {
   it("should return order", async () => {
     const order = await Order.getById(values.id);
     expect(order).toBeInstanceOf(Order);
-    expect(order?.getObject()).toEqual(values);
+    const orderObj = order?.getObject();
+    expect(orderObj?.id).toEqual(values.id);
+    expect(orderObj?.user_id).toEqual(values.user_id);
+    expect(orderObj?.status).toEqual(values.status);
+    expect(orderObj?.products.length).toEqual(values.products.length);
   });
 
   it("should return order by user_id", async () => {
