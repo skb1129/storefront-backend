@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 
+import { JWT_SECRET } from "../configs";
 import { TokenData } from "../types";
-
-const JWT_SECRET = `${process.env.JWT_SECRET}`;
 
 export function generate(data: TokenData, expiresIn?: string | number) {
   return jwt.sign(data, JWT_SECRET, { expiresIn });

@@ -33,6 +33,7 @@ POSTGRES_PASSWORD="password"
 POSTGRES_USER="postgres"
 POSTGRES_DB="store"
 DATABASE_URL="postgresql://postgres:password@localhost:5432/store"
+SALT_ROUNDS="10"
 JWT_SECRET="super-secure-jwt-secret"
 ```
 
