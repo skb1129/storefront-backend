@@ -13,7 +13,7 @@
 					"script": {
 						"exec": [
 							"var access_token = pm.response.text();",
-							"pm.globals.set(\"access_token\", access_token);"
+							"pm.collectionVariables.set(\"access_token\", access_token);"
 						],
 						"type": "text/javascript"
 					}
@@ -24,7 +24,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"stark\",\n    \"password\": \"super-secret\"\n}",
+					"raw": "{\n    \"id\": \"root\",\n    \"password\": \"password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -363,7 +363,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"status\": \"active\",\n    \"products\": [1, 2, 3],\n    \"quantities\": [5, 10, 20],\n    \"user_id\": \"stark\"\n}",
+					"raw": "{\n    \"status\": \"active\",\n    \"products\": [\n        {\n            \"product_id\": 1,\n            \"quantity\": 10\n        },\n        {\n            \"product_id\": 2,\n            \"quantity\": 20\n        }\n    ],\n    \"user_id\": \"postman\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -377,35 +377,6 @@
 					],
 					"path": [
 						"order",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Orders",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{access_token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{origin}}/order/all/",
-					"host": [
-						"{{origin}}"
-					],
-					"path": [
-						"order",
-						"all",
 						""
 					]
 				}
@@ -442,6 +413,35 @@
 			"response": []
 		},
 		{
+			"name": "Get All Orders",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/order/all/",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"order",
+						"all",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Orders for User",
 			"request": {
 				"auth": {
@@ -457,14 +457,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{origin}}/order/user/stark/",
+					"raw": "{{origin}}/order/user/postman/",
 					"host": [
 						"{{origin}}"
 					],
 					"path": [
 						"order",
 						"user",
-						"stark",
+						"postman",
 						""
 					]
 				}
