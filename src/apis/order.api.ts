@@ -48,11 +48,10 @@ api.get(
 api.post(
   "/",
   auth.requiresAuth(async (req, res, auth) => {
-    const { status, products, quantities, user_id } = req.body;
-    if (!status || !user_id || !products?.length || !quantities?.length || products.length !== quantities.length)
-      return res.status(400).send();
+    const { status, products, user_id } = req.body;
+    if (!status || !user_id || !products?.length) return res.status(400).send();
     if (user_id !== auth.sub && !auth.admin) return res.status(401).send();
-    const order = new Order(status, products, quantities, user_id);
+    const order = new Order(status, products, user_id);
     await order.create();
     res.send(order.getObject());
   })
@@ -62,16 +61,12 @@ api.put(
   "/",
   auth.requiresAuth(async (req, res, auth) => {
     if (!auth.admin) return res.status(401).send();
-    const { id, status, products, quantities, user_id } = req.body;
+    const { id, status, user_id } = req.body;
     if (!id) return res.status(400).send();
     const order = await Order.getById(id);
     if (!order) return res.status(204).send(`No order found with id: ${id}`);
     status && (order.status = status);
     user_id && (order.user_id = user_id);
-    if (products?.length && quantities?.length && products.length == quantities.length) {
-      order.products = products;
-      order.quantities = quantities;
-    }
     await order.update();
     res.send(order.getObject());
   })

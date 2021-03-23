@@ -33,6 +33,7 @@ POSTGRES_PASSWORD="password"
 POSTGRES_USER="postgres"
 POSTGRES_DB="store"
 DATABASE_URL="postgresql://postgres:password@localhost:5432/store"
+ROOT_USER_PASSWORD="password"
 SALT_ROUNDS="10"
 JWT_SECRET="super-secure-jwt-secret"
 ```
@@ -76,6 +77,17 @@ yarn start
 ```
 
 The application will run on http://localhost:8000/.
+
+***Note:** On the first run, the application will create the following root user which you can use to create more users:*
+```json
+{
+  "id": "root",
+  "password": "{process.env.ROOT_USER_PASSWORD}",
+  "firstname": "Root",
+  "lastname": "Root",
+  "superuser": true
+}
+```
 
 ## Running the unit tests
 

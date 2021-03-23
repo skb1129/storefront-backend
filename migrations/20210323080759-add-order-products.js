@@ -15,23 +15,31 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("orders", {
-    id: { type: "int", primaryKey: true, autoIncrement: true },
-    user_id: {
-      type: "string",
+  return db.createTable("order_products", {
+    order_id: {
+      type: "int",
       foreignKey: {
-        name: "order_user_id_fk",
-        table: "users",
+        name: "order_product_order_id_fk",
+        table: "orders",
         rules: { onDelete: "CASCADE", onUpdate: "RESTRICT" },
         mapping: "id",
       },
     },
-    status: "string",
+    product_id: {
+      type: "int",
+      foreignKey: {
+        name: "order_product_product_id_fk",
+        table: "products",
+        rules: { onDelete: "CASCADE", onUpdate: "RESTRICT" },
+        mapping: "id",
+      },
+    },
+    quantity: "int",
   });
 };
 
 exports.down = function (db) {
-  return db.dropTable("orders");
+  return db.dropTable("order_products");
 };
 
 exports._meta = {
